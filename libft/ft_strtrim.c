@@ -3,50 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 18:20:22 by alromero          #+#    #+#             */
-/*   Updated: 2019/11/20 10:33:56 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/24 19:57:01 by danicn            #+#    #+#             */
+/*   Updated: 2022/04/01 18:28:55 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-int		flag_guessing(char const *s1, char c)
+static int	beginning_count(char *s, char *set)
 {
 	int	i;
+	int	j;
+	int	f;
 
 	i = 0;
-	while (s1[i])
-		if (s1[i++] == c)
-			return (1);
-	return (0);
+	while (s[i])
+	{
+		f = 0;
+		j = 0;
+		while (set[j])
+		{
+			if (s[i] == set[j])
+				f = 1;
+			j++;
+		}
+		if (f)
+			i++;
+		else
+			break ;
+	}
+	return (i);
+}
+
+static int	final_count(char *s, char *set)
+{
+	int	i;
+	int	j;
+	int	f;
+
+	i = (int) ft_strlen(s) - 1;
+	while (i >= 0)
+	{
+		f = 0;
+		j = 0;
+		while (set[j])
+		{
+			if (s[i] == set[j])
+				f = 1;
+			j++;
+		}
+		if (f)
+			i--;
+		else
+			break ;
+	}
+	return ((int)ft_strlen(s) - i - 1);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	i;
-	char	*new;
-	size_t	len;
-	size_t	k;
+	int		b;
+	int		f;
+	char	*str;
+	int		i;
 
+	if (s1 == NULL)
+		return (NULL);
+	if (set == NULL)
+		return (ft_strdup(s1));
+	b = beginning_count((char *)s1, (char *)set);
+	f = final_count((char *)s1, (char *) set);
+	i = (int)ft_strlen(s1) - b - f + 1;
+	if (b >= (int) ft_strlen(s1) - f)
+		return (ft_strdup(""));
+	str = (char *) malloc(sizeof(char) * (i));
+	if (str == NULL)
+		return (NULL);
 	i = 0;
-	k = 0;
-	if (!s1)
-		return (NULL);
-	len = ft_strlen(s1);
-	while (flag_guessing(set, s1[i]) && s1[i])
-		i++;
-	while (flag_guessing(set, s1[len - 1]) && (len - 1))
-		len--;
-	if (len < i)
-		len = i;
-	new = malloc(len - i + 1);
-	if (!new)
-		return (NULL);
-	while (i < len)
-		new[k++] = s1[i++];
-	new[k] = '\0';
-	return (new);
+	while (b < (int)(ft_strlen(s1) - f))
+		str[i++] = s1[b++];
+	str[i] = 0;
+	return (str);
 }
+
+// int main(){
+// 	char s[] = "zzxzxzzxzhxolaxzxzxfzxxz", set[] = "zx";
+// 	printf("%s", ft_strtrim(s, set));
+// }

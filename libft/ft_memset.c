@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/08 12:19:43 by agomez-o          #+#    #+#             */
-/*   Updated: 2019/11/27 13:28:48 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/21 19:14:13 by dcruz-na          #+#    #+#             */
+/*   Updated: 2022/04/03 21:25:30 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 
 void	*ft_memset(void *b, int c, size_t len)
 {
-	unsigned char	*s;
-	size_t			i;
+	unsigned int	i;
 
 	i = 0;
-	s = b;
 	while (i < len)
 	{
-		s[i] = (unsigned char)c;
+		((unsigned char *)(b))[i] = (unsigned char)c;
 		i++;
 	}
 	return (b);
 }
+
+// int main()
+// {
+// 	char x[] = "bue   na  dsf  ";
+// 	memset(x, 66, 5);
+// 	printf("%s", x);
+// }

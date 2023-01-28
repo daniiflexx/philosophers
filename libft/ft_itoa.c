@@ -3,81 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/12 20:02:31 by alromero          #+#    #+#             */
-/*   Updated: 2019/11/13 21:41:03 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/25 17:57:17 by danicn            #+#    #+#             */
+/*   Updated: 2022/04/01 18:48:29 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-int		digit_counter(int n)
+static void	final(long *i, char *s)
 {
-	int i;
-	int	copy;
-
-	i = 0;
-	if (n == 0)
-		return (1);
-	if (n == -2147483648)
-		return (11);
-	if (n < 0)
-	{
-		n = -n;
-		i++;
-	}
-	copy = n;
-	while (copy > 0)
-	{
-		copy = copy / 10;
-		i++;
-	}
-	return (i);
+	if (ft_strlen(s) == 0)
+		s[*i++] = '0';
+	s[*i] = 0;
 }
 
-int		exp_counter(int n)
+static long	ft_pow(long x, long exp)
 {
-	int exp;
-	int	digits;
-
-	if (n == 0)
+	if (exp == 0)
 		return (1);
-	if (n == -2147483648)
-		return (1000000000);
-	digits = digit_counter(n);
-	if (n < 0)
-		digits--;
-	exp = 1;
-	while (--digits)
-		exp = exp * 10;
-	return (exp);
+	if (exp == 1)
+		return (x);
+	return (x * ft_pow(x, exp - 1));
+}
+
+static long	ncifras(long n)
+{
+	long	j;
+
+	j = 0;
+	while (n != 0)
+	{	
+		n /= 10;
+		j++;
+	}
+	return (j);
 }
 
 char	*ft_itoa(int n)
 {
-	char		*str;
-	int			exp;
-	int			i;
-	long int	copy;
+	long	i;
+	long	j;
+	char	*s;
+	long	l;
 
-	copy = (long int)n;
-	exp = exp_counter(n);
-	i = 0;
-	if (!(str = malloc(digit_counter(n) + 1)))
+	l = (long)n;
+	j = ncifras(l);
+	s = (char *)malloc(sizeof(char) * (j + 2));
+	if (s == NULL)
 		return (NULL);
-	if (n < 0)
+	i = 0;
+	if (l < 0)
 	{
-		str[i++] = '-';
-		copy = -copy;
+		s[i++] = '-';
+		l *= -1;
 	}
-	while (exp > 0)
+	if (l == 0)
+		s[i++] = '0';
+	while (j != 0)
 	{
-		str[i++] = (copy / exp) + 48;
-		copy = copy % exp;
-		exp = exp / 10;
+		s[i++] = (char)(l / ft_pow(10, j - 1)) + '0';
+		l = l % ft_pow(10, --j);
 	}
-	str[i] = '\0';
-	return (str);
+	final(&i, s);
+	return (s);
 }
+
+// int main(){
+// 	printf("%s", ft_itoa(0));
+// }

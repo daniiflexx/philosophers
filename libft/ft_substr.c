@@ -3,35 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/12 18:15:58 by alromero          #+#    #+#             */
-/*   Updated: 2019/11/19 19:03:43 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/24 19:11:02 by danicn            #+#    #+#             */
+/*   Updated: 2022/03/31 15:06:30 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*str;
-	int		i;
+	unsigned char	*n;
+	unsigned int	i;
+	unsigned int	j;
 
-	i = 0;
-	str = NULL;
-	if (!s || (!(str = malloc(len + 1))))
+	if (s == NULL)
 		return (NULL);
-	if (start > ft_strlen(s))
-	{
+	if (len > (unsigned int)ft_strlen(s) && start == 0)
+		return (ft_strdup(s));
+	if (start > (unsigned int)ft_strlen(s))
 		return (ft_strdup(""));
-	}
-	while (len--)
+	i = 0;
+	j = 0;
+	n = malloc(sizeof(char) * (len + 1));
+	if (n == NULL)
+		return (NULL);
+	i = start;
+	while (j < len)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		n[j++] = s[i++];
 	}
-	str[i] = '\0';
-	return (str);
+	n[len] = '\0';
+	return ((char *)n);
 }
+// int main(){
+// 	char a[] = "hola buenas";
+// 	printf("%s", ft_substr(a, 2, 8));
+// }

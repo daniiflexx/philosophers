@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_listiter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
+/*   By: danicn <danicn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/22 19:02:38 by dcruz-na          #+#    #+#             */
-/*   Updated: 2022/03/27 19:05:15 by dcruz-na         ###   ########.fr       */
+/*   Created: 2022/03/26 14:14:39 by danicn            #+#    #+#             */
+/*   Updated: 2022/03/26 14:19:07 by danicn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	while (n)
+	if (lst && f)
 	{
-		*(unsigned char *)(s) = 0;
-		s++;
-		n--;
+		while (lst)
+		{
+			f(lst->content);
+			lst = lst->next;
+		}
 	}
 }
-
-// int main()
-// {
-//     int i;
-// 	char x[] = "bue   na  dsf  ";
-// 	bzero(x, 5);
-// 	for(i = 0; i < 16; i++){
-//         printf("%c", x[i]);
-//     }
-//     return 0;
-// }

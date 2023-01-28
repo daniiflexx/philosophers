@@ -3,29 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/08 12:39:15 by agomez-o          #+#    #+#             */
-/*   Updated: 2019/11/27 13:28:44 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/22 19:38:31 by dcruz-na          #+#    #+#             */
+/*   Updated: 2022/04/01 18:20:24 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
 #include "libft.h"
 
-void	*ft_memmove(void *str1, const void *str2, size_t n)
+void	*ft_memmove(void *dst, const void *src, size_t n)
 {
-	unsigned char		*p_str1;
-	unsigned const char	*p_str2;
+	unsigned char	*a;
+	unsigned char	*b;
+	size_t			i;
 
-	if (str1 < str2)
-		return (ft_memcpy(str1, str2, n));
-	p_str1 = (unsigned char*)str1;
-	p_str2 = (unsigned const char*)str2;
-	if (!n || str1 == str2)
-		return (str1);
-	while (n--)
-		p_str1[n] = p_str2[n];
-	return (str1);
+	a = (unsigned char *)dst;
+	b = (unsigned char *)src;
+	if (dst == NULL && src == NULL)
+		return (NULL);
+	i = 0;
+	if (b < a)
+	{
+		while (++i <= n)
+			a[n - i] = b[n - i];
+	}
+	else
+	{
+		while (n--)
+			*a++ = *b++;
+	}
+	return (dst);
 }
+// int main()
+// {
+// 	char x[] = "bue   na  dsf  ";
+// 	char y[] = "klk pap  ";
+// 	ft_memmove(x, x + 2, 5);
+// 	printf("%s", x);
+// }

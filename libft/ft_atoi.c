@@ -3,40 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/25 12:42:50 by agomez-o          #+#    #+#             */
-/*   Updated: 2019/11/27 13:27:59 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/24 14:40:17 by dcruz-na          #+#    #+#             */
+/*   Updated: 2022/04/01 21:09:37 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
-#include <stdio.h>
+
+static unsigned long	ft_max_long(void)
+{
+	return (~0UL >> 1);
+}
 
 int	ft_atoi(const char *str)
 {
-	int					i;
-	int					sign;
-	unsigned long long	result;
+	unsigned long	n;
+	int				s;
+	int				i;
 
-	result = 0;
-	sign = 1;
 	i = 0;
-	while (str[i] == ' ' || str[i] == '\r' || str[i] == '\t'
-			|| str[i] == '\n' || str[i] == '\v' || str[i] == '\f')
+	n = 0;
+	s = 1;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
-	if (str[i] == '-')
-		sign *= -1;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
+	if (str[i] == '+' || str[i] == '-')
+		if (str[i++] == '-')
+			s *= -1;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (result > __LONG_LONG_MAX__)
-			return (sign == -1 ? 0 : -1);
-		result *= 10;
-		result += (str[i] - '0');
-		i++;
+		n = n * 10 + (str[i++] - '0');
+		if (n > ft_max_long() && s == 1)
+			return (-1);
+		else if (n > ft_max_long() && s == -1)
+			return (0);
 	}
-	return (result * sign);
+	return (s * n);
 }

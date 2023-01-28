@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/15 21:52:23 by alromero          #+#    #+#             */
-/*   Updated: 2019/11/26 11:38:54 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/25 19:33:09 by danicn            #+#    #+#             */
+/*   Updated: 2022/04/01 17:33:15 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	t_list *temporal;
+	unsigned int	i;
 
-	temporal = (*alst);
-	if ((*alst))
+	if (!s || !f)
+		return ;
+	i = 0;
+	while (s[i])
 	{
-		while (temporal->next != NULL)
-			temporal = temporal->next;
-		temporal->next = new;
+		f(i, s + i);
+		i++;
 	}
-	if (!(*alst))
-		((*alst) = new);
 }

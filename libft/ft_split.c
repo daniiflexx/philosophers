@@ -3,99 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alromero <alromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/14 23:01:13 by alromero          #+#    #+#             */
-/*   Updated: 2019/11/16 20:45:53 by alromero         ###   ########.fr       */
+/*   Created: 2022/03/25 15:03:08 by danicn            #+#    #+#             */
+/*   Updated: 2022/04/01 20:41:36 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdlib.h>
 #include "libft.h"
 
-static int		numstring(char const *s1, char c)
+static void	declar(int *i, int *j, int *k)
 {
-	int	comp;
-	int	cles;
+	*i = 0;
+	*j = 0;
+	*k = 0;
+}
 
-	comp = 0;
-	cles = 0;
-	if (*s1 == '\0')
+static void	init(char *s, int *j, int *k, char c)
+{
+	while ((char)(s[*j]) == c)
+		*k = ++(*j);
+	while ((char)(s[*j]) != c && s[*j])
+		(*j)++;
+}
+
+static int	allocate(char **s, int i, int j, int k)
+{
+	s[i] = (char *)malloc(sizeof(char) * (j - k + 1));
+	if (s[i] == NULL)
+	{
+		while (--i >= 0)
+			free(s[i]);
+		free(s);
 		return (0);
-	while (*s1 != '\0')
-	{
-		if (*s1 == c)
-			cles = 0;
-		else if (cles == 0)
-		{
-			cles = 1;
-			comp++;
-		}
-		s1++;
 	}
-	return (comp);
+	return (1);
 }
 
-static int		numchar(char const *s2, char c, int i)
-{
-	int	lenght;
-
-	lenght = 0;
-	while (s2[i] != c && s2[i] != '\0')
-	{
-		lenght++;
-		i++;
-	}
-	return (lenght);
-}
-
-static char		**freee(char const **dst, int j)
-{
-	while (j > 0)
-	{
-		j--;
-		free((void *)dst[j]);
-	}
-	free(dst);
-	return (NULL);
-}
-
-static char		**affect(char const *s, char **dst, char c, int l)
+static int	counting_words(const char *str, char c)
 {
 	int	i;
-	int	j;
-	int	k;
+	int	trigger;
 
 	i = 0;
-	j = 0;
-	while (s[i] != '\0' && j < l)
+	trigger = 0;
+	while (*str)
 	{
-		k = 0;
-		while (s[i] == c)
+		if (*str != c && trigger == 0)
+		{
+			trigger = 1;
 			i++;
-		dst[j] = (char *)malloc(sizeof(char) * numchar(s, c, i) + 1);
-		if (dst[j] == NULL)
-			return (freee((char const **)dst, j));
-		while (s[i] != '\0' && s[i] != c)
-			dst[j][k++] = s[i++];
-		dst[j][k] = '\0';
-		j++;
+		}
+		else if (*str == c)
+			trigger = 0;
+		str++;
 	}
-	dst[j] = 0;
-	return (dst);
+	return (i);
 }
 
-char			**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	char	**dst;
-	int		l;
+	int		i;
+	int		j;
+	int		z;
+	int		k;
+	char	**sts;
 
 	if (s == NULL)
 		return (NULL);
-	l = numstring(s, c);
-	dst = (char **)malloc(sizeof(char *) * (l + 1));
-	if (dst == NULL)
+	sts = (char **) malloc(sizeof(char *) * (counting_words(s, c) + 1));
+	if (sts == NULL)
 		return (NULL);
-	return (affect(s, dst, c, l));
+	declar(&i, &j, &k);
+	while (i < counting_words(s, c))
+	{
+		init((char *)s, &j, &k, c);
+		if (allocate(sts, i, j, k) == 0)
+			return (NULL);
+		z = 0;
+		while (k < j)
+			sts[i][z++] = (char)(s[k++]);
+		sts[i++][z] = 0;
+	}
+	sts[i] = NULL;
+	return ((char **)sts);
 }
+// int main(){
+// 	int i;
+// 	char x[] = "   lorem   ipsum dolor     sit amet, co
+// 	char **strs = ft_split(x, ' ');
+// 	i = 0;
+// 	while(strs[i])
+// 		printf("%s\n", strs[i++]);
+// 	printf("%s", strs[i]);
+// 	system("leaks a.out");
+// }
