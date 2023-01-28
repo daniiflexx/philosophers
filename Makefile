@@ -1,6 +1,6 @@
 NAME = philo
 LIBFT = libft/libft.a
-SRCS = src/philo.c src/error.c src/utils.c
+SRCS = src/philo.c src/error.c src/utils.c src/main.c
 OBJS = $(patsubst src/%, obj/%, $(SRCS:.c=.o))
 CFLAGS = -Wall -Wextra -Werror
 ############################
