@@ -6,7 +6,7 @@
 /*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 11:08:44 by dcruz-na          #+#    #+#             */
-/*   Updated: 2023/01/28 13:08:10 by dcruz-na         ###   ########.fr       */
+/*   Updated: 2023/02/04 19:41:10 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,26 @@ struct s_data {
 	int				i;
 	int				stop;
 	int				philo_eat;
-	pthread_mutex_t	eating;
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	m_stop;
 	pthread_mutex_t	dead;
 	t_philo			philos[MAX_PHILOS];
 };
 
-void		exit_error(char *msj);
-int			msleep(unsigned int ms);
-void		fill_data(t_data *d, char **argv, int argc);
-void		*routine1(void *p);
-void		destroy_program(t_data *d);
-long long	timestamp(void);
-void		error_management(int argc, char **argv);
-void		eat_and_sleep(t_philo *ph);
-void		sleeping(t_philo *ph);
-void		take_forks(t_philo *ph);
-void		*check_death(void *phi);
-int			it_is_dead(t_philo *philo, int nb);
-void		fill_philo(t_data *d);
-
+void			exit_error(char *msj);
+void			fill_data(t_data *d, char **argv, int argc);
+void			*phil(void *p);
+void			destroy_program(t_data *d);
+unsigned long	timestamp(void);
+void			error_management(int argc, char **argv);
+void			eat_and_sleep(t_philo *ph);
+void			sleeping(t_philo *ph);
+void			take_forks(t_philo *ph);
+void			*check_death(void *phi);
+int				it_is_dead(t_philo *philo, int nb);
+void			fill_philo(t_data *d);
+void			ft_usleep(unsigned long time);
+void			msleep(unsigned int ms, t_data *data);
+unsigned long	my_time(void);
+void			error_free(t_data *d, char *msj);
 #endif

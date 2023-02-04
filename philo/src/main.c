@@ -6,7 +6,7 @@
 /*   By: dcruz-na <dcruz-na@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 13:05:17 by dcruz-na          #+#    #+#             */
-/*   Updated: 2023/01/28 13:15:08 by dcruz-na         ###   ########.fr       */
+/*   Updated: 2023/02/04 19:40:51 by dcruz-na         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ void	fill_philo(t_data *d)
 		d->philos[i].data = d;
 		d->philos[i].eat_times = 0;
 		d->philos[i].last_eat = -1;
-		pthread_mutex_init(&(d->philos[i].l_fork), NULL);
+		if (pthread_mutex_init(&(d->philos[i].l_fork), NULL))
+			error_free(d, "Mutex failed\n");
 		if (i == d->philo_n - 1)
 			d->philos[i].r_fork = &(d->philos[0].l_fork);
 		else
 			d->philos[i].r_fork = &(d->philos[i + 1].l_fork);
-		pthread_create(&(d->philos[i].thread), NULL, routine1, &(d->philos[i]));
+		if (pthread_create(&(d->philos[i].thread), NULL, phil, &(d->philos[i])))
+			error_free(d, "Thread failed");
 	}
 	i = -1;
 	while (++i < d->philo_n)
@@ -49,9 +51,12 @@ void	fill_philo(t_data *d)
 
 void	fill_data(t_data *d, char **argv, int argc)
 {
-	pthread_mutex_init(&d->dead, NULL);
-	pthread_mutex_init(&d->m_stop, NULL);
-	pthread_mutex_init(&d->m_eat, NULL);
+	if (pthread_mutex_init(&d->dead, NULL))
+		error_free(d, "Mutex failed");
+	if (pthread_mutex_init(&d->m_stop, NULL))
+		error_free(d, "Mutex failed");
+	if (pthread_mutex_init(&d->m_eat, NULL))
+		error_free(d, "Mutex failed");
 	d->philo_eat = 0;
 	d->i = 0;
 	d->stop = 0;
